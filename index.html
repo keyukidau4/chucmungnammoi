@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thiệp Chúc Mừng Năm Mới 2026</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Serif&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body,
+      html {
+        height: 100%;
+        background: radial-gradient(#000000, #1a1a2e);
+        font-family: "Noto Serif", serif;
+        overflow: hidden;
+      }
+
+      .wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      }
+
+      .message {
+        position: absolute;
+        color: gold;
+        text-shadow: 0 0 5px #fff, 0 0 10px #ffd700;
+        z-index: 2;
+        font-family: "Dancing Script", cursive;
+      }
+
+      .message.top {
+        top: 30px;
+        width: 100%;
+        text-align: center;
+        font-size: 2.5em;
+      }
+
+      .message.bottom {
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5em;
+      }
+
+      .message.left,
+      .message.right {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 200px;
+        font-size: 1.3em;
+      }
+
+      .message.left {
+        left: 30px;
+        text-align: left;
+      }
+
+      .message.right {
+        right: 30px;
+        text-align: right;
+      }
+
+      .fade-in {
+        animation: fadeIn 2s ease-in-out forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <canvas id="fireworks"></canvas>
+
+      <div class="message top fade-in">🎉 Chúc Mừng Năm Mới 2026 🎉</div>
+      <div class="message left fade-in">
+        🌟 An khang<br />
+        🌟 Thịnh vượng<br />
+        🌟 Bình an
+      </div>
+      <div class="message right fade-in">
+        💰 Tài lộc<br />
+        ❤️ Hạnh phúc<br />
+        🧧 Vạn sự như ý
+      </div>
+      <div class="message bottom fade-in">
+        Gửi lời chúc từ HungNguyenVan – chúc bạn một năm mới rực rỡ! 🌸
+      </div>
+    </div>
+
+    <!-- FIREWORK SCRIPT -->
+    <script>
+      const canvas = document.getElementById("fireworks");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        generateStars();
+      });
+
+      // ⭐ Stars
+      const stars = [];
+      const starCount = 120;
+
+      function generateStars() {
+        stars.length = 0;
+        for (let i = 0; i < starCount; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.2 + 0.3,
+            alpha: Math.random() * 0.5 + 0.5,
+            flicker: Math.random() * 0.02 + 0.005,
+          });
+        }
+      }
+
+      generateStars();
+
+      function drawStars() {
+        for (let star of stars) {
+          star.alpha += (Math.random() > 0.5 ? 1 : -1) * star.flicker;
+          if (star.alpha > 1) star.alpha = 1;
+          if (star.alpha < 0.2) star.alpha = 0.2;
+          ctx.beginPath();
+          ctx.globalAlpha = star.alpha;
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      class Particle {
+        constructor(x, y, color) {
+          this.x = x;
+          this.y = y;
+          this.radius = Math.random() * 2 + 1;
+          this.angle = Math.random() * 2 * Math.PI;
+          this.speed = Math.random() * 5 + 2;
+          this.color = color;
+          this.alpha = 1;
+          this.decay = Math.random() * 0.01 + 0.007;
+          this.gravity = 0.05;
+          this.vx = Math.cos(this.angle) * this.speed;
+          this.vy = Math.sin(this.angle) * this.speed;
+        }
+
+        update() {
+          this.vx *= 0.98;
+          this.vy *= 0.98;
+          this.vy += this.gravity;
+          this.x += this.vx;
+          this.y += this.vy;
+          this.alpha -= this.decay;
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.globalAlpha = this.alpha;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      const fireworks = [];
+
+      function createFirework(x, y) {
+        const colors = [
+          "#ff3f3f",
+          "#ff9f00",
+          "#00d2ff",
+          "#00ff84",
+          "#ff00f2",
+          "#fff700",
+        ];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        for (let i = 0; i < 50; i++) {
+          fireworks.push(new Particle(x, y, color));
+        }
+      }
+
+      function animate() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        drawStars();
+
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+          const p = fireworks[i];
+          p.update();
+          p.draw(ctx);
+          if (p.alpha <= 0) {
+            fireworks.splice(i, 1);
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      setInterval(() => {
+        const x = Math.random() * canvas.width * 0.8 + canvas.width * 0.1;
+        const y = Math.random() * canvas.height * 0.4 + canvas.height * 0.1;
+        createFirework(x, y);
+      }, 1200);
+    </script>
+  </body>
+</html>
